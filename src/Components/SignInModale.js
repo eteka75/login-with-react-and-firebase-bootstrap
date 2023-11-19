@@ -1,9 +1,10 @@
-import React, {useContext, useRef, useState} from 'react'
+import React, { useContext, useRef, useState } from 'react';
 import { UserContext } from '../context/UserContext';
 import { useNavigate } from 'react-router-dom';
 
-export default function SignUpModale() {
-    const {modaleState, toggleModals, signUp } = useContext(UserContext);
+export default function SignInModale() {
+    const {modaleState, toggleModals, signIn } = useContext(UserContext);
+
     const [validation, setValidation] = useState('');
     const inputs = useRef([]);
     const formRef= useRef();
@@ -19,28 +20,17 @@ export default function SignUpModale() {
     const handleSubmit= async (e)=> {
         e.preventDefault();
         setValidation('');
-        if((inputs.current[1].value.length  || inputs.current[2].value.length) < 6) {
-            setValidation('6 caractères minimum required');
-            return;
-        }else if(inputs.current[1].value.length!== inputs.current[2].value.length){
-            setValidation('Passwords don\'t match');
-            return;
-        }
+       console.log("INPUTS ====>",inputs.current[0].value, inputs.current[1].value);
         try {
-            const cred = await signUp(inputs.current[0].value, inputs.current[1].value);
-            formRef.current.reset();
+            const cred = await signIn(inputs.current[0].value, inputs.current[1].value);
+            //formRef.current.reset();
             setValidation('');
             console.log(cred);
             toggleModals('Close');
             navigate('/private/dashboard');
             
-        } catch(e) {
-            if(e.code ==="auth/invalid-email") {
-                setValidation('Email format invalid');
-            }
-            if(e.code ==="auth/email-already-in-use") {
-                setValidation('Email already in use');
-            }
+        } catch {
+            setValidation('Email and/or password incorrect');
         }
     }
 
@@ -51,7 +41,7 @@ export default function SignUpModale() {
 
     return (
         <>
-        {modaleState.SignUpModale && (
+        {modaleState.SignInModale && (
         <div className="position-fixed top-0 vw-100 vh-100">
                 <div onClick={() => closeModal()}
                  className="w-100 h-100 bg-dark bg-opacity-75">
@@ -61,24 +51,19 @@ export default function SignUpModale() {
                         <div className="modal-dialog bg-white p-4">
                             <div className="modal-content">
                                 <div className="modal-header mb-4">
-                                    <h4 className="modal-title ">Sign Up</h4>
+                                    <h4 className="modal-title ">Sign In</h4>
                                     <button onClick={() => closeModal()} type="button" className="btn-close"></button>
                                 </div>
                                 <div className="modal-body" onSubmit={handleSubmit}>
                                     <form className='sign-up-form' ref={formRef}>
                                         <div className="mb-3">
-                                            <label className='form-label' htmlFor='signUpEmail'>Email</label>
-                                            <input ref={addInputs} type='email' className='form-control' name='signUpEmail' id='signUpEmail' placeholder="Email" />
+                                            <label className='form-label' htmlFor='signInEmail'>Email</label>
+                                            <input ref={addInputs} type='email' className='form-control' name='signInEmail' id='signInEmail' placeholder="Email" />
 
                                         </div>
                                         <div className="mb-3">
-                                            <label className='form-label' htmlFor='signUpPwd'>Password</label>
-                                            <input ref={addInputs} type='password' className='form-control' name='signUpPwd' id='signUpPwd' placeholder="#############" />
-
-                                        </div>
-                                        <div className="mb-1">
-                                            <label className='form-label' htmlFor='repeatPwd'>Password</label>
-                                            <input ref={addInputs} type='password' className='form-control' name='repeatPwd' id='repeatPwd' placeholder="#############" />
+                                            <label className='form-label' htmlFor='signInPwd'>Password</label>
+                                            <input ref={addInputs} type='password' className='form-control' name='signInPwd' id='signInPwd' placeholder="#############" />
 
                                         </div>
                                         {validation && 
@@ -87,7 +72,7 @@ export default function SignUpModale() {
                                         </div>
                                         }
                                         <div className="mb-0 mt-3">
-                                                <button  type="submit" className="btn w-100 btn-primary">Submit</button>
+                                                <button  type="submit" className="btn w-100 btn-dark">Sign in</button>
                                         </div>
                                     </form>
                                     
