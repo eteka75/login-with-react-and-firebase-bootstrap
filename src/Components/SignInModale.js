@@ -22,10 +22,9 @@ export default function SignInModale() {
         setValidation('');
        console.log("INPUTS ====>",inputs.current[0].value, inputs.current[1].value);
         try {
-            const cred = await signIn(inputs.current[0].value, inputs.current[1].value);
+            await signIn(inputs.current[0].value, inputs.current[1].value);
             //formRef.current.reset();
             setValidation('');
-            console.log(cred);
             toggleModals('Close');
             navigate('/private/dashboard');
             

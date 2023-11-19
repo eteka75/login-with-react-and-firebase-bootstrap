@@ -27,10 +27,9 @@ export default function SignUpModale() {
             return;
         }
         try {
-            const cred = await signUp(inputs.current[0].value, inputs.current[1].value);
+            await signUp(inputs.current[0].value, inputs.current[1].value);
             formRef.current.reset();
             setValidation('');
-            console.log(cred);
             toggleModals('Close');
             navigate('/private/dashboard');
             
