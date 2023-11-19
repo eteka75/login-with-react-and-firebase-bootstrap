@@ -1,11 +1,17 @@
-import logo from './logo.svg';
-import './App.css';
+import { Route, Routes } from "react-router-dom";
+import Home from "./pages/Home";
+import Navbar from "./Components/Navbar";
+import SignUpModale from "./Components/SignUpModale";
 
 function App() {
   return (
-    <div className="App">
-      <h1 className='display-1'>Bootstrap</h1>
-    </div>
+    <>
+    <SignUpModale/>
+    <Navbar/>
+      <Routes>
+        <Route path="/" element={ <Home /> } />
+      </Routes>
+     </>
   );
 }
 
